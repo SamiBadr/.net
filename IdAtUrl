@@ -1,0 +1,18 @@
+at html side:
+
+ <asp:TemplateField HeaderText="Edit">
+                <ItemTemplate>
+                    <asp:HyperLink ID="hypEdit"  runat="server" NavigateUrl='<%# Eval("EmployeeId","~/Web_Pages/EditEmp.aspx?empId={0}") %>' >Edit</asp:HyperLink>
+                    
+                </ItemTemplate>
+            </asp:TemplateField>
+            
+            
+//////////////////////////////////////////////////////////////////
+
+ate asp.net side :
+
+ int empId = Convert.ToInt32(Request.QueryString["empId"]);
+ 
+ 
+ //////////////////////////////////////////////////////////////////
