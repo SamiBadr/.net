@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Web_Pages_Login : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        
+    }
+
+    private void Login()
+    {
+                        string username = "";
+                        string password = "";
+                        string ErrorMessage = "";
+        
+
+          HR.UsersService UserService = new HR.UsersService();
+         HR.MembershipsService MemService = new HR.MembershipsService();
+        HR.Entities.Memberships Mem = new HR.Entities.Memberships();
+        HR.Entities.Users User = new HR.Entities.Users();
+        HR.Entities.TList<HR.Entities.Users> List = new HR.Entities.TList<HR.Entities.Users>();
+
+
+
+
+                             username = UserName.Text;
+                             password = PassWord.Text;
+       
+                         // password = Request.Form["PassWord"];
+                          if (username == "" || password == "")
+                            {
+                                ErrorMessage = "You must specify a username and password.";
+                                  lblErorr.Text = ErrorMessage;
+                                  lblErorr.Visible = true;
+                          }  
+                          
+                          else
+                          {
+
+                              List = UserService.Find("UserName =" + username);
+
+                              foreach(HR.Entities.Users a in List)
+                              {
+                                  if(a.UserName == username)
+                                      User = a;
+                              }
+
+                              HR.Entities.TList<HR.Entities.Memberships> MList = MemService.Find("UserId = " + User.UserId);
+
+                              foreach(HR.Entities.Memberships b in MList)
+                              {
+                                  Mem = b;
+                              }
+
+                          // Login, Navigate back to the homepage and exit
+                          if (Mem.Password == password)
+                            {
+                                Session["UserName"] = username;
+                                Session["UserID"] = User.UserId; 
+                              Response.Redirect("/HR.Website/Web_Pages/Profile.aspx");
+                              
+                          }
+                            else
+                            {
+                              ErrorMessage = "Login failed";
+                              lblErorr.Text = ErrorMessage;
+                              lblErorr.Visible = true;
+                            }
+
+                          }
+
+                        
+
+                        if (ErrorMessage!="") 
+                        {
+                         
+                            ErrorMessage = "Please correct the errors and try again.";
+                            lblErorr.Text = ErrorMessage;
+                            lblErorr.Visible = true;
+                        }
+
+ }
+
+
+
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        Login();
+    }
+}
+
+
