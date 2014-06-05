@@ -1,0 +1,35 @@
+if(FileUpload1.HasFile)
+    {
+        try
+        {
+            if (FileUpload1.PostedFile.ContentType == "image/jpeg")
+            {
+                if (FileUpload1.PostedFile.ContentLength < 102400)
+                {
+                    string filename = Path.GetFileName(FileUpload1.FileName);
+                    FileUpload1.SaveAs(Server.MapPath("~/ProfilePhotos/") + filename);
+                    Photo = "~/ProfilePhotos/"+filename;
+                    StatusLabel.Text = "Photo uploaded!";
+                    StatusLabel.Visible = true;
+                }
+              
+                else
+                {
+                    StatusLabel.Text = "The Photo has to be less than 100 kb!";
+                    StatusLabel.Visible = true;
+                }
+            }
+           
+            else
+            {
+                StatusLabel.Text = "Only JPEG files are accepted!";
+                StatusLabel.Visible = true;
+            }
+        }
+
+        catch(Exception ex)
+        {
+            StatusLabel.Text = "The Photo could not be uploaded.";
+            StatusLabel.Visible = true;
+        }
+    }
